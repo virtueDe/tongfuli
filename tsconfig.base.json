@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@tongfuli/ui": ["packages/ui/src/index.ts"],
+      "@tongfuli/domain-sdk": ["packages/domain-sdk/src/index.ts"],
+      "@tongfuli/analytics": ["packages/analytics/src/index.ts"],
+      "@tongfuli/shared-utils": ["packages/shared-utils/src/index.ts"]
+    }
+  }
+}

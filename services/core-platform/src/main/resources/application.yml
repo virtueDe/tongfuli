@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: core-platform
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+server:
+  port: 8080

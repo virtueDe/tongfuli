@@ -1,0 +1,15 @@
+{
+  "feature": "tongfuli",
+  "status": {
+    "stage1": "completed",
+    "stage2": "completed",
+    "stage3": "in_progress",
+    "stage4": "pending"
+  },
+  "context": {
+    "projectType": "new-project",
+    "interfaces": ["web", "miniapp", "admin"],
+    "backend": ["java", "python"],
+    "deployment": "pending"
+  }
+}

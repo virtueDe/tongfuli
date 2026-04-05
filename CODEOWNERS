@@ -1,0 +1,21 @@
+# 根级治理
+* @mi
+
+# 文档与契约
+/contracts/ @mi
+/docs/ @mi
+/.boss/ @mi
+
+# 前端
+/apps/web/ @mi
+/apps/admin/ @mi
+/apps/miniapp/ @mi
+/packages/ @mi
+
+# 后端
+/services/core-platform/ @mi
+/services/ai-orchestrator/ @mi
+/services/knowledge-pipeline/ @mi
+
+# 基础设施
+/infra/ @mi

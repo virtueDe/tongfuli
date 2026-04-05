@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('apps/**', 'packages/**', 'package.json', 'pnpm-workspace.yaml', 'turbo.json') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.7
+      - name: Install
+        run: pnpm install --frozen-lockfile=false
+      - name: Lint
+        run: pnpm lint
+
+  java-core-platform:
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('services/core-platform/**') != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Validate Gradle project
+        run: gradle test
+        working-directory: services/core-platform
+
+  python-services:
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('services/ai-orchestrator/**', 'services/knowledge-pipeline/**') != '' }}
+    strategy:
+      matrix:
+        service:
+          - services/ai-orchestrator
+          - services/knowledge-pipeline
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+      - name: Sync dependencies
+        run: uv sync --group dev
+        working-directory: ${{ matrix.service }}
+      - name: Run tests
+        run: uv run pytest
+        working-directory: ${{ matrix.service }}

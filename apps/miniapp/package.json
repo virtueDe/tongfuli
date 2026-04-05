@@ -1,0 +1,15 @@
+{
+  "name": "miniapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "taro build --type weapp --watch",
+    "build": "taro build --type weapp",
+    "test": "echo \"miniapp tests pending\""
+  },
+  "dependencies": {
+    "@tarojs/components": "^4.0.0",
+    "@tarojs/react": "^4.0.0",
+    "react": "^19.0.0"
+  }
+}

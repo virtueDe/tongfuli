@@ -1,0 +1,22 @@
+[project]
+name = "knowledge-pipeline"
+version = "0.1.0"
+description = "Tongfuli knowledge pipeline service"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.111.0",
+  "pydantic>=2.8.0",
+  "uvicorn>=0.30.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
