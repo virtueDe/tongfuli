@@ -18,6 +18,8 @@ pytest-cache-files-*/
 
 # Java / Gradle
 .gradle/
+.gradle-test-home/
+.gradle-user-home/
 build/
 out/
 .gradle-home/

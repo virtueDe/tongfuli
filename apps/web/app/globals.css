@@ -4,7 +4,10 @@
   --panel: #fff9ef;
   --ink: #2a2018;
   --accent: #9d3d2f;
+  --accent-soft: rgba(157, 61, 47, 0.08);
   --border: #d8c2a1;
+  --user-bubble: #f4ddc6;
+  --error: #a83120;
 }
 
 * {
@@ -25,6 +28,8 @@ body {
   padding: 32px;
   display: grid;
   gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .hero-panel,
@@ -49,26 +54,64 @@ body {
 }
 
 .panel-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 20px;
-  font-weight: 600;
+}
+
+.panel-header > div {
+  display: grid;
+  gap: 4px;
+}
+
+.panel-label {
+  font-size: 0.875rem;
+  color: rgba(42, 32, 24, 0.7);
 }
 
 .message-list {
-  min-height: 220px;
+  min-height: 320px;
   padding: 20px;
   border-radius: 16px;
-  background: rgba(157, 61, 47, 0.06);
+  background: var(--accent-soft);
   margin-bottom: 20px;
+  display: grid;
+  gap: 12px;
 }
 
 .message {
-  max-width: 52rem;
+  width: min(52rem, 100%);
   padding: 16px 18px;
   border-radius: 18px;
   background: #ffffff;
+  border: 1px solid rgba(216, 194, 161, 0.65);
+}
+
+.message.user {
+  margin-left: auto;
+  background: var(--user-bubble);
+}
+
+.message.assistant.streaming {
+  border-style: dashed;
+}
+
+.message.error {
+  border-color: rgba(168, 49, 32, 0.35);
+}
+
+.message-role {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.message-content {
+  margin: 0;
+  line-height: 1.7;
+  white-space: pre-wrap;
 }
 
 .composer {
@@ -81,6 +124,8 @@ body {
   padding: 14px 16px;
   border-radius: 999px;
   border: 1px solid var(--border);
+  font: inherit;
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .composer button {
@@ -90,4 +135,38 @@ body {
   background: var(--accent);
   color: #fff;
   font-weight: 700;
+  min-height: 52px;
+}
+
+.composer button:disabled,
+.composer input:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.error-banner {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(168, 49, 32, 0.1);
+  color: var(--error);
+  border: 1px solid rgba(168, 49, 32, 0.18);
+}
+
+@media (max-width: 720px) {
+  .page-shell {
+    padding: 20px;
+  }
+
+  .panel-header {
+    grid-template-columns: 1fr;
+  }
+
+  .composer {
+    flex-direction: column;
+  }
+
+  .composer button {
+    width: 100%;
+  }
 }

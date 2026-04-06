@@ -1,0 +1,53 @@
+services:
+  ai-orchestrator:
+    build:
+      context: ../../services/ai-orchestrator
+      dockerfile: Dockerfile
+    container_name: tongfuli-ai-orchestrator
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  core-platform:
+    build:
+      context: ../../services/core-platform
+      dockerfile: Dockerfile
+    container_name: tongfuli-core-platform
+    depends_on:
+      ai-orchestrator:
+        condition: service_healthy
+    environment:
+      TONGFULI_ORCHESTRATOR_BASE_URL: http://ai-orchestrator:8001
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/api/internal/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  web:
+    build:
+      context: ../..
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_CORE_PLATFORM_BASE_URL: http://127.0.0.1:8080
+    container_name: tongfuli-web
+    depends_on:
+      core-platform:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+
