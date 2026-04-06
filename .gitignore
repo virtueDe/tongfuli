@@ -4,17 +4,23 @@ node_modules/
 .next/
 dist/
 coverage/
+.pnpm-store/
 
 # Python
 __pycache__/
 .pytest_cache/
 .venv/
 *.pyc
+.uv-cache/
+.pytest_cache_local/
+.tmp/
+pytest-cache-files-*/
 
 # Java / Gradle
 .gradle/
 build/
 out/
+.gradle-home/
 
 # IDE / OS
 .idea/
@@ -28,6 +34,9 @@ Desktop.ini
 !.env.example
 logs/
 tmp/
+
+# Local toolchains / archives
+.tools/
 
 # Boss artifacts runtime
 .boss/**/deploy-report.md

@@ -41,6 +41,7 @@ tongfuli/
 - 立项规格：[docs/initiatives/000-foundation/spec.md](docs/initiatives/000-foundation/spec.md)
 - 实施计划：[docs/initiatives/000-foundation/plan.md](docs/initiatives/000-foundation/plan.md)
 - 实施任务：[docs/initiatives/000-foundation/tasks.md](docs/initiatives/000-foundation/tasks.md)
+- 本地环境：[docs/runbooks/local-setup.md](docs/runbooks/local-setup.md)
 
 ## 当前状态
 
@@ -56,3 +57,11 @@ tongfuli/
 - 文档常驻：架构与 ADR 在 `docs/` 中持续维护
 - 分层清晰：业务主系统、AI 编排、知识处理各司其职
 - 测试先行：关键链路必须有单元、集成与 E2E 覆盖
+
+## 本地环境
+
+执行以下命令加载项目所需的 Java 21 与 Python 3.12：
+
+```powershell
+. .\infra\scripts\use-dev-env.ps1
+```
