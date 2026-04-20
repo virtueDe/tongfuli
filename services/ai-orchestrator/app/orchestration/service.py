@@ -54,6 +54,30 @@ class OrchestrationService:
 
     def generate_answer(self, request: OrchestrationRequest) -> OrchestrationAnswer:
         normalized_input = request.user_input.strip()
+        rate_limit = self.postcheck_service.rate_limit(max(1, len(normalized_input) // 4))
+        if not rate_limit.allowed:
+            blocked_answer = "这轮问得有点急，我先收一收，你稍后再接着问。"
+            postcheck = PostCheckResult(
+                answer_length=len(blocked_answer),
+                needs_rewrite=False,
+                checks=["rate_limit"],
+                degraded=True,
+                block_reason=rate_limit.reason,
+            )
+            return OrchestrationAnswer(
+                turn_id=f"turn_{uuid4().hex[:12]}",
+                answer=blocked_answer,
+                acting_character_id=request.acting_character_id,
+                mode=request.mode,
+                question_type="rate_limited",
+                retrieval_plan=RetrievalPlan(
+                    question_type="rate_limited",
+                    layers=[],
+                    strategies=[],
+                ),
+                postcheck=postcheck,
+            )
+
         question_type = self.classify_question(normalized_input)
         retrieval_plan = self.retrieval_service.plan(question_type, request.mode)
         opening = self._CHARACTER_OPENINGS.get(
@@ -75,6 +99,8 @@ class OrchestrationService:
             )
         )
         postcheck = self.postcheck_service.evaluate(answer_text)
+        if postcheck.block_reason == "unsafe_content":
+            answer_text = "这类内容我不接，咱还是回到《武林外传》的剧情和人物上来聊。"
 
         return OrchestrationAnswer(
             turn_id=f"turn_{uuid4().hex[:12]}",

@@ -28,6 +28,8 @@ class ConversationResponse(BaseModel):
     retrievalLayers: list[str]
     retrievalStrategies: list[str]
     postcheckChecks: list[str]
+    degraded: bool
+    blockReason: str | None
 
     @classmethod
     def from_answer(cls, answer: OrchestrationAnswer) -> "ConversationResponse":
@@ -40,6 +42,8 @@ class ConversationResponse(BaseModel):
             retrievalLayers=answer.retrieval_plan.layers,
             retrievalStrategies=answer.retrieval_plan.strategies,
             postcheckChecks=answer.postcheck.checks,
+            degraded=answer.postcheck.degraded,
+            blockReason=answer.postcheck.block_reason,
         )
 
 
