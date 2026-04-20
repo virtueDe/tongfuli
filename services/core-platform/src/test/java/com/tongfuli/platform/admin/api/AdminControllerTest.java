@@ -81,4 +81,44 @@ class AdminControllerTest {
             .andExpect(jsonPath("$.status").value("published"))
             .andExpect(jsonPath("$.snapshotVersion").value("snapshot_2026_04_21"));
     }
+
+    @Test
+    void shouldCreateAndGrayReleaseStrategy() throws Exception {
+        mockMvc.perform(post("/api/v1/admin/strategies")
+                .contentType("application/json")
+                .content("""
+                    {
+                      "strategyName": "default-role-answer",
+                      "targetScope": "character",
+                      "configPayload": {
+                        "characterId": "char_baizhantang",
+                        "temperature": 0.4
+                      },
+                      "changedBy": "ops_002"
+                    }
+                    """))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.strategyName").value("default-role-answer"))
+            .andExpect(jsonPath("$.releaseStatus").value("draft"));
+
+        mockMvc.perform(post("/api/v1/admin/strategies/{strategyId}/gray-release", "strategy_demo_001")
+                .contentType("application/json")
+                .content("""
+                    {
+                      "operator": "ops_003",
+                      "note": "先对白展堂灰度"
+                    }
+                    """))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.releaseStatus").value("gray"));
+    }
+
+    @Test
+    void shouldReturnTurnDiagnostic() throws Exception {
+        mockMvc.perform(get("/api/v1/admin/diagnostics/turns/{turnId}", "turn_demo_001"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.turnId").value("turn_demo_001"))
+            .andExpect(jsonPath("$.riskLevel").value("low"))
+            .andExpect(jsonPath("$.evidenceTitles", hasSize(3)));
+    }
 }

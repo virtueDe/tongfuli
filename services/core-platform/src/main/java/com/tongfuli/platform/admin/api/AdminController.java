@@ -57,4 +57,26 @@ public class AdminController {
     ) {
         return ResponseEntity.ok(PublishKnowledgeResponse.fromReceipt(adminService.publishKnowledge(request)));
     }
+
+    @PostMapping("/strategies")
+    ResponseEntity<StrategyVersionResponse> createStrategy(
+        @Valid @RequestBody CreateStrategyRequest request
+    ) {
+        return ResponseEntity.ok(StrategyVersionResponse.fromVersion(adminService.createStrategy(request)));
+    }
+
+    @PostMapping("/strategies/{strategyId}/gray-release")
+    ResponseEntity<StrategyVersionResponse> grayReleaseStrategy(
+        @PathVariable String strategyId,
+        @Valid @RequestBody GrayReleaseStrategyRequest request
+    ) {
+        return ResponseEntity.ok(
+            StrategyVersionResponse.fromVersion(adminService.grayReleaseStrategy(strategyId, request))
+        );
+    }
+
+    @GetMapping("/diagnostics/turns/{turnId}")
+    ResponseEntity<TurnDiagnosticResponse> turnDiagnostic(@PathVariable String turnId) {
+        return ResponseEntity.ok(adminService.getTurnDiagnostic(turnId));
+    }
 }
