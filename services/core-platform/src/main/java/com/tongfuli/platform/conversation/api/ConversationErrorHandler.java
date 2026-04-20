@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.tongfuli.platform.conversation.application.ConversationIntegrationException;
 import com.tongfuli.platform.conversation.application.SessionNotFoundException;
+import com.tongfuli.platform.conversation.application.TurnNotFoundException;
 
 @RestControllerAdvice
 public class ConversationErrorHandler {
 
-    @ExceptionHandler(SessionNotFoundException.class)
-    ResponseEntity<PublicApiError> handleSessionNotFound(SessionNotFoundException exception) {
+    @ExceptionHandler({SessionNotFoundException.class, TurnNotFoundException.class})
+    ResponseEntity<PublicApiError> handleNotFound(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(new PublicApiError(exception.getMessage()));
     }

@@ -5,8 +5,10 @@ import java.time.Instant;
 public record ConversationSession(
     String sessionId,
     String clientType,
+    String deviceId,
     CharacterProfile currentCharacter,
     ConversationMode currentMode,
-    Instant createdAt
+    Instant createdAt,
+    Instant updatedAt
 ) {
 }

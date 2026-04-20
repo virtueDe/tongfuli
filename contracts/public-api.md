@@ -51,6 +51,19 @@ SSE 事件：
 }
 ```
 
+响应体：
+
+```json
+{
+  "sessionId": "session_xxx",
+  "currentMode": "canon",
+  "currentCharacter": {
+    "id": "char_guofurong",
+    "name": "郭芙蓉"
+  }
+}
+```
+
 ## 4. 切换模式
 
 - 方法：`POST /api/v1/public/sessions/{sessionId}/mode-switch`
@@ -63,14 +76,59 @@ SSE 事件：
 }
 ```
 
+响应体：
+
+```json
+{
+  "sessionId": "session_xxx",
+  "currentMode": "fun",
+  "currentCharacter": {
+    "id": "char_guofurong",
+    "name": "郭芙蓉"
+  }
+}
+```
+
 ## 5. 展开依据
 
 - 方法：`GET /api/v1/public/turns/{turnId}/evidence`
+
+响应体：
+
+```json
+{
+  "turnId": "turn_xxx",
+  "items": [
+    {
+      "evidenceId": "ev_xxx",
+      "sourceType": "canonical",
+      "title": "问题锚点",
+      "snippet": "用户问题：老白为什么怕佟掌柜？"
+    }
+  ]
+}
+```
 
 ## 6. 获取最近会话
 
 - 方法：`GET /api/v1/public/sessions/recent`
 - 查询参数：`deviceId`
+
+响应体：
+
+```json
+[
+  {
+    "sessionId": "session_xxx",
+    "currentMode": "canon",
+    "currentCharacter": {
+      "id": "char_baizhantang",
+      "name": "白展堂"
+    },
+    "updatedAt": "2026-04-20T11:32:00Z"
+  }
+]
+```
 
 ## 7. 提交反馈
 
@@ -82,5 +140,15 @@ SSE 事件：
 {
   "feedbackType": "incorrect_fact",
   "note": "这里的剧情顺序不对"
+}
+```
+
+响应体：
+
+```json
+{
+  "turnId": "turn_xxx",
+  "feedbackType": "incorrect_fact",
+  "recordedAt": "2026-04-20T11:35:00Z"
 }
 ```

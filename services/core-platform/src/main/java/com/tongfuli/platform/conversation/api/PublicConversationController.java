@@ -7,10 +7,12 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -36,6 +38,22 @@ public class PublicConversationController {
         return ResponseEntity.ok(CreateSessionResponse.fromSession(conversationService.createSession(request)));
     }
 
+    @PostMapping("/sessions/{sessionId}/character-switch")
+    ResponseEntity<CreateSessionResponse> switchCharacter(
+        @PathVariable String sessionId,
+        @Valid @RequestBody SwitchCharacterRequest request
+    ) {
+        return ResponseEntity.ok(CreateSessionResponse.fromSession(conversationService.switchCharacter(sessionId, request)));
+    }
+
+    @PostMapping("/sessions/{sessionId}/mode-switch")
+    ResponseEntity<CreateSessionResponse> switchMode(
+        @PathVariable String sessionId,
+        @Valid @RequestBody SwitchModeRequest request
+    ) {
+        return ResponseEntity.ok(CreateSessionResponse.fromSession(conversationService.switchMode(sessionId, request)));
+    }
+
     @PostMapping(path = "/sessions/{sessionId}/turns/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     SseEmitter streamTurn(
         @PathVariable String sessionId,
@@ -45,6 +63,30 @@ public class PublicConversationController {
         SseEmitter emitter = new SseEmitter(0L);
         CompletableFuture.runAsync(() -> emitAnswer(emitter, turn));
         return emitter;
+    }
+
+    @GetMapping("/turns/{turnId}/evidence")
+    ResponseEntity<TurnEvidenceResponse> getEvidence(@PathVariable String turnId) {
+        return ResponseEntity.ok(TurnEvidenceResponse.fromTurn(conversationService.getTurn(turnId)));
+    }
+
+    @GetMapping("/sessions/recent")
+    ResponseEntity<List<RecentSessionResponse>> recentSessions(@RequestParam String deviceId) {
+        return ResponseEntity.ok(
+            conversationService.getRecentSessions(deviceId).stream()
+                .map(RecentSessionResponse::fromSession)
+                .toList()
+        );
+    }
+
+    @PostMapping("/turns/{turnId}/feedback")
+    ResponseEntity<TurnFeedbackAcceptedResponse> submitFeedback(
+        @PathVariable String turnId,
+        @Valid @RequestBody SubmitTurnFeedbackRequest request
+    ) {
+        return ResponseEntity.ok(
+            TurnFeedbackAcceptedResponse.fromFeedback(conversationService.submitFeedback(turnId, request))
+        );
     }
 
     private void emitAnswer(SseEmitter emitter, ConversationTurn turn) {

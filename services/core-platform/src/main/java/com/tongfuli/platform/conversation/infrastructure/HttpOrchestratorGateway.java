@@ -1,6 +1,7 @@
 package com.tongfuli.platform.conversation.infrastructure;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -48,6 +49,7 @@ public class HttpOrchestratorGateway implements OrchestratorGateway {
                     response.answer(),
                     CharacterProfile.fromId(response.actingCharacterId()),
                     ConversationMode.fromValue(response.mode()),
+                    List.of(),
                     Instant.now()
                 )
             );

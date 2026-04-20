@@ -5,8 +5,11 @@ import {
   DEFAULT_MODE,
   type CreateSessionRequest,
   type PublicApiError,
+  type SwitchCharacterRequest,
+  type SwitchModeRequest,
   type SendTurnRequest,
   type SessionSummary,
+  type TurnEvidence,
   type StreamAnswerCompletedEvent,
   type StreamAnswerDeltaEvent,
   type StreamAnswerErrorEvent,
@@ -73,6 +76,60 @@ export async function streamTurn({
   }
 
   await readEventStream(response.body, onEvent);
+}
+
+export async function switchCharacter(
+  sessionId: string,
+  request: SwitchCharacterRequest,
+): Promise<SessionSummary> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/v1/public/sessions/${sessionId}/character-switch`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(await readApiError(response, "切换角色失败，请稍后重试。"));
+  }
+
+  return (await response.json()) as SessionSummary;
+}
+
+export async function switchMode(
+  sessionId: string,
+  request: SwitchModeRequest,
+): Promise<SessionSummary> {
+  const response = await fetch(
+    `${API_BASE_URL}/api/v1/public/sessions/${sessionId}/mode-switch`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(await readApiError(response, "切换模式失败，请稍后重试。"));
+  }
+
+  return (await response.json()) as SessionSummary;
+}
+
+export async function getTurnEvidence(turnId: string): Promise<TurnEvidence> {
+  const response = await fetch(`${API_BASE_URL}/api/v1/public/turns/${turnId}/evidence`);
+
+  if (!response.ok) {
+    throw new Error(await readApiError(response, "读取依据失败，请稍后重试。"));
+  }
+
+  return (await response.json()) as TurnEvidence;
 }
 
 function getOrCreateDeviceId(): string {

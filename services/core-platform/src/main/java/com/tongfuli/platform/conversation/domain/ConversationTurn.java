@@ -1,6 +1,7 @@
 package com.tongfuli.platform.conversation.domain;
 
 import java.time.Instant;
+import java.util.List;
 
 public record ConversationTurn(
     String turnId,
@@ -9,6 +10,7 @@ public record ConversationTurn(
     String answer,
     CharacterProfile actingCharacter,
     ConversationMode mode,
+    List<TurnEvidenceItem> evidence,
     Instant createdAt
 ) {
 }

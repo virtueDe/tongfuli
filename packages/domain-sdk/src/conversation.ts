@@ -19,6 +19,10 @@ export interface SessionSummary {
   currentCharacter: CharacterSummary;
 }
 
+export interface RecentSessionSummary extends SessionSummary {
+  updatedAt: string;
+}
+
 export interface CreateSessionRequest {
   clientType: ClientType;
   initialMode: ConversationMode;
@@ -26,11 +30,42 @@ export interface CreateSessionRequest {
   deviceId: string;
 }
 
+export interface SwitchCharacterRequest {
+  targetCharacterId: CharacterId;
+}
+
+export interface SwitchModeRequest {
+  targetMode: ConversationMode;
+}
+
 export interface SendTurnRequest {
   input: string;
   mode: ConversationMode;
   actingCharacterId: CharacterId;
   showEvidenceHint: boolean;
+}
+
+export interface TurnEvidenceItem {
+  evidenceId: string;
+  sourceType: "canonical" | "character" | "mode";
+  title: string;
+  snippet: string;
+}
+
+export interface TurnEvidence {
+  turnId: string;
+  items: TurnEvidenceItem[];
+}
+
+export interface TurnFeedbackRequest {
+  feedbackType: "incorrect_fact" | "bad_style" | "unsafe" | "other";
+  note?: string;
+}
+
+export interface TurnFeedbackReceipt {
+  turnId: string;
+  feedbackType: string;
+  recordedAt: string;
 }
 
 export interface StreamAnswerDeltaEvent {
