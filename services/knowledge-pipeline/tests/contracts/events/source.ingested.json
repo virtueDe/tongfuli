@@ -1,0 +1,13 @@
+{
+  "eventId": "evt_ingested_001",
+  "eventType": "source.ingested",
+  "occurredAt": "2026-04-20T12:00:00Z",
+  "traceId": "trace_ingested_001",
+  "producer": "knowledge-pipeline",
+  "payload": {
+    "batchId": "batch_script_001",
+    "sourceType": "script",
+    "sourceName": "wulinwaizhuan-s01",
+    "itemCount": 2
+  }
+}

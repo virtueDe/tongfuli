@@ -1,0 +1,19 @@
+{
+  "importType": "script",
+  "sourceName": "wulinwaizhuan-s01",
+  "batchId": "batch_script_001",
+  "items": [
+    {
+      "episodeNo": 1,
+      "sceneNo": 1,
+      "speaker": "佟湘玉",
+      "line": "都给我打起精神来。"
+    },
+    {
+      "episodeNo": 1,
+      "sceneNo": 1,
+      "speaker": "白展堂",
+      "line": "掌柜的，这就招呼上。"
+    }
+  ]
+}

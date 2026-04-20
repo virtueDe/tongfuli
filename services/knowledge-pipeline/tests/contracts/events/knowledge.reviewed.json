@@ -1,0 +1,13 @@
+{
+  "eventId": "evt_reviewed_001",
+  "eventType": "knowledge.reviewed",
+  "occurredAt": "2026-04-20T12:10:00Z",
+  "traceId": "trace_reviewed_001",
+  "producer": "knowledge-pipeline",
+  "payload": {
+    "reviewTaskId": "review_001",
+    "decision": "approved",
+    "reviewerId": "ops_001",
+    "batchId": "batch_script_001"
+  }
+}
