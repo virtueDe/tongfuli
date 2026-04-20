@@ -24,6 +24,10 @@ class ConversationResponse(BaseModel):
     answer: str
     actingCharacterId: str
     mode: Literal["canon", "extended", "fun"]
+    questionType: str
+    retrievalLayers: list[str]
+    retrievalStrategies: list[str]
+    postcheckChecks: list[str]
 
     @classmethod
     def from_answer(cls, answer: OrchestrationAnswer) -> "ConversationResponse":
@@ -32,6 +36,10 @@ class ConversationResponse(BaseModel):
             answer=answer.answer,
             actingCharacterId=answer.acting_character_id,
             mode=answer.mode,
+            questionType=answer.question_type,
+            retrievalLayers=answer.retrieval_plan.layers,
+            retrievalStrategies=answer.retrieval_plan.strategies,
+            postcheckChecks=answer.postcheck.checks,
         )
 
 

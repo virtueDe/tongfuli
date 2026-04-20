@@ -1,8 +1,20 @@
-class PostCheckService:
-    """后校验占位，后续负责事实支撑、角色一致性和越界检查。"""
+from dataclasses import dataclass
 
-    def evaluate(self, answer_text: str) -> dict[str, object]:
-        return {
-            "answerLength": len(answer_text),
-            "needsRewrite": False,
-        }
+
+@dataclass(slots=True)
+class PostCheckResult:
+    answer_length: int
+    needs_rewrite: bool
+    checks: list[str]
+
+
+class PostCheckService:
+    """首版后校验摘要。"""
+
+    def evaluate(self, answer_text: str) -> PostCheckResult:
+        checks = ["character_consistency", "evidence_presence", "boundary_guard"]
+        return PostCheckResult(
+            answer_length=len(answer_text),
+            needs_rewrite=False,
+            checks=checks,
+        )

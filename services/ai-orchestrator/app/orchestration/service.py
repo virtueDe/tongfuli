@@ -1,6 +1,10 @@
 from dataclasses import dataclass
 from uuid import uuid4
 
+from app.gateway.service import GatewayRequest, ModelGateway
+from app.postcheck.service import PostCheckResult, PostCheckService
+from app.retrieval.service import RetrievalPlan, RetrievalService
+
 
 @dataclass(slots=True)
 class OrchestrationRequest:
@@ -16,10 +20,13 @@ class OrchestrationAnswer:
     answer: str
     acting_character_id: str
     mode: str
+    question_type: str
+    retrieval_plan: RetrievalPlan
+    postcheck: PostCheckResult
 
 
 class OrchestrationService:
-    """生成第一版角色化回答，后续再替换成真实检索与模型链路。"""
+    """首版 AI 编排链路：问题分类 -> 检索规划 -> 回答拼装 -> 后校验。"""
 
     _CHARACTER_OPENINGS = {
         "char_baizhantang": "展堂我先把话撂这儿",
@@ -27,28 +34,54 @@ class OrchestrationService:
         "char_guofurong": "本女侠看这事一点都不复杂",
     }
 
-    _MODE_SUFFIX = {
-        "canon": "，这话尽量照着原剧的人情世故来讲。",
-        "extended": "，我顺手把背景和前因后果也给你补齐。",
-        "fun": "，要是你非得图个乐呵，那我就说得俏皮一点。",
-    }
+    def __init__(
+        self,
+        retrieval_service: RetrievalService | None = None,
+        model_gateway: ModelGateway | None = None,
+        postcheck_service: PostCheckService | None = None,
+    ) -> None:
+        self.retrieval_service = retrieval_service or RetrievalService()
+        self.model_gateway = model_gateway or ModelGateway()
+        self.postcheck_service = postcheck_service or PostCheckService()
+
+    def classify_question(self, user_input: str) -> str:
+        normalized = user_input.strip()
+        if any(token in normalized for token in ["为什么", "第几集", "谁", "哪里", "关系"]):
+            return "fact"
+        if any(token in normalized for token in ["梗", "吐槽", "好笑", "玩笑"]):
+            return "meme"
+        return "roleplay"
 
     def generate_answer(self, request: OrchestrationRequest) -> OrchestrationAnswer:
+        normalized_input = request.user_input.strip()
+        question_type = self.classify_question(normalized_input)
+        retrieval_plan = self.retrieval_service.plan(question_type, request.mode)
         opening = self._CHARACTER_OPENINGS.get(
             request.acting_character_id,
             self._CHARACTER_OPENINGS["char_baizhantang"],
         )
-        mode_suffix = self._MODE_SUFFIX.get(request.mode, self._MODE_SUFFIX["canon"])
-        normalized_input = request.user_input.strip()
-        answer = (
+
+        prompt = (
             f"{opening}，你问的是“{normalized_input}”。"
-            " 现在这版编排先把角色口吻和主链路跑通，"
-            f"{mode_suffix}"
+            f" 本轮判定问题类型是 {question_type}，"
+            f"会优先查这些知识层：{', '.join(retrieval_plan.layers)}，"
+            f"采用这些检索策略：{', '.join(retrieval_plan.strategies)}。"
         )
+        answer_text = self.model_gateway.generate(
+            GatewayRequest(
+                prompt=prompt,
+                mode=request.mode,
+                acting_character_id=request.acting_character_id,
+            )
+        )
+        postcheck = self.postcheck_service.evaluate(answer_text)
 
         return OrchestrationAnswer(
             turn_id=f"turn_{uuid4().hex[:12]}",
-            answer=answer,
+            answer=answer_text,
             acting_character_id=request.acting_character_id,
             mode=request.mode,
+            question_type=question_type,
+            retrieval_plan=retrieval_plan,
+            postcheck=postcheck,
         )
