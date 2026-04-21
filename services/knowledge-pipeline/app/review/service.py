@@ -26,3 +26,21 @@ class ReviewService:
             note=note,
             publishable=publishable,
         )
+
+    def decide_video_candidate(
+        self,
+        review_task_id: str,
+        trust_level: str,
+        confidence_label: str,
+        approve: bool,
+    ) -> ReviewDecision:
+        publishable = approve and trust_level != "low" and confidence_label == "high"
+        status = "approved" if approve else "rejected"
+        note = "视频知识可自动发布" if publishable else "视频知识需人工复核或已驳回"
+
+        return ReviewDecision(
+            review_task_id=review_task_id,
+            status=status,
+            note=note,
+            publishable=publishable,
+        )

@@ -5,6 +5,8 @@ from app.contracts import (
     EventEnvelope,
     ExternalSourceImportContract,
     ScriptImportContract,
+    VideoPublishRequestContract,
+    VideoSourceImportContract,
 )
 
 
@@ -36,9 +38,20 @@ def test_import_contract_samples_are_valid() -> None:
     external_import = ExternalSourceImportContract.model_validate(
         load_json(CONTRACT_ROOT / "imports" / "external-source-import.json")
     )
+    video_import = VideoSourceImportContract.model_validate(
+        load_json(CONTRACT_ROOT / "imports" / "video-source-import.json")
+    )
+    video_publish = VideoPublishRequestContract.model_validate(
+        load_json(CONTRACT_ROOT / "imports" / "video-publish-request.json")
+    )
 
     assert script_import.import_type == "script"
     assert len(script_import.items) == 2
     assert script_import.items[0].speaker == "佟湘玉"
     assert external_import.import_type == "external_source"
     assert external_import.trust_level == "medium"
+    assert video_import.import_type == "video_source"
+    assert video_import.platform == "bilibili"
+    assert video_import.evidence[0].time_offset_seconds == 128
+    assert video_publish.candidate_ids == ["candidate_vid_001"]
+    assert video_publish.snapshot_version == "2026.04.21-01"

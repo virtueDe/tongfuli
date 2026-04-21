@@ -1,0 +1,10 @@
+{
+  "reviewTaskId": "review_video_001",
+  "sourceDocumentId": "video:bilibili:BV1xx411c7mD",
+  "trustLevel": "medium",
+  "confidenceLabel": "high",
+  "snapshotVersion": "2026.04.21-01",
+  "candidateIds": [
+    "candidate_vid_001"
+  ]
+}

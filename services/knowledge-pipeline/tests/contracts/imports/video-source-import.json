@@ -1,0 +1,23 @@
+{
+  "importType": "video_source",
+  "sourceName": "bilibili:wulinyz",
+  "platform": "bilibili",
+  "platformVideoId": "BV1xx411c7mD",
+  "sourceUrl": "https://www.bilibili.com/video/BV1xx411c7mD",
+  "title": "武林外传人物关系解析",
+  "authorName": "江湖研究社",
+  "publishedAt": "2026-04-21T08:00:00Z",
+  "summary": "分析佟湘玉与白展堂关系演进",
+  "trustLevel": "medium",
+  "contentLanguage": "zh-CN",
+  "transcript": "这一段主要讲的是佟湘玉对白展堂信任的建立。",
+  "evidence": [
+    {
+      "snippetId": "snippet_vid_001",
+      "kind": "transcript",
+      "content": "湘玉已经默认老白会留下来",
+      "timeOffsetSeconds": 128,
+      "confidence": 0.93
+    }
+  ]
+}
