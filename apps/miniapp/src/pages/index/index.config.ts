@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: "Tongfuli"
+  navigationBarTitleText: "同福里对话",
 });
