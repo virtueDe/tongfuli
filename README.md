@@ -42,7 +42,7 @@ tongfuli/
 
 - `T001-T009` 已完成。
 - `T010-T025` 大多已推进到“进行中”，具体以 `docs/initiatives/000-foundation/tasks.md` 为准。
-- `T026` 仍未开始。
+- `T026` 已进入首版发布文档收尾阶段。
 
 ## 本地启动
 
@@ -82,3 +82,4 @@ Set-Location .\services\ai-orchestrator; uv run pytest tests/test_conversation_a
 - 本地环境说明：[docs/runbooks/local-setup.md](docs/runbooks/local-setup.md)
 - 观测栈手册：[docs/runbooks/observability-stack.md](docs/runbooks/observability-stack.md)
 - 对话故障排查：[docs/runbooks/conversation-incident.md](docs/runbooks/conversation-incident.md)
+- 首发发布文档：[docs/release/README.md](docs/release/README.md)
