@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { startTransition, useState } from "react";
 
 import {
@@ -297,6 +298,14 @@ export function ConversationShell() {
         <p className="lead">
           这版把主链路往前推了一步：匿名进入、自动建会话、角色切换、模式切换、流式拿回答，还能展开最近一轮的依据提示。
         </p>
+        <div className="hero-actions">
+          <Link className="hero-link" href="/topics">
+            先看专题入口
+          </Link>
+          <Link className="hero-link" href="/share/laobai-fear-chain">
+            看分享落地页
+          </Link>
+        </div>
       </section>
 
       <section className="control-panel">
