@@ -3,6 +3,7 @@ package com.tongfuli.platform.admin.api;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -120,5 +121,25 @@ class AdminControllerTest {
             .andExpect(jsonPath("$.turnId").value("turn_demo_001"))
             .andExpect(jsonPath("$.riskLevel").value("low"))
             .andExpect(jsonPath("$.evidenceTitles", hasSize(3)));
+    }
+
+    @Test
+    void shouldReturnBadRequestWithout500WhenAcceptHeaderDoesNotAllowJson() throws Exception {
+        mockMvc.perform(post("/api/v1/admin/strategies")
+                .contentType("application/json")
+                .accept("text/event-stream")
+                .content("""
+                    {
+                      "strategyName": "default-role-answer",
+                      "targetScope": "invalid_scope",
+                      "configPayload": {
+                        "characterId": "char_baizhantang",
+                        "temperature": 0.4
+                      },
+                      "changedBy": "ops_002"
+                    }
+                    """))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().string(""));
     }
 }

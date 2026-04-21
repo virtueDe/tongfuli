@@ -35,6 +35,8 @@ Tongfuli 的主业务系统，当前承接 `T013`、`T018`、部分 `T025`。
 
 服务默认监听 `8080`。
 
+如需在 VS Code 中启动，优先使用工作区里的 `Run and Debug -> Core Platform`，不要直接点击 `CorePlatformApplication.java` 文件上的默认运行按钮。
+
 ## 验证
 
 ```powershell

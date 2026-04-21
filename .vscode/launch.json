@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Core Platform",
+      "request": "launch",
+      "mainClass": "com.tongfuli.platform.CorePlatformApplication",
+      "projectName": "core-platform",
+      "cwd": "${workspaceFolder}/services/core-platform",
+      "vmArgs": "-Duser.dir=${workspaceFolder}/services/core-platform",
+      "env": {
+        "JAVA_HOME": "C:\\Program Files\\Microsoft\\jdk-21.0.10.7-hotspot",
+        "TONGFULI_PYTHON": "C:\\Users\\MI\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "GRADLE_USER_HOME": "${workspaceFolder}\\.tmp\\gradle-user-home"
+      }
+    },
+    {
+      "type": "node",
+      "name": "Core Platform bootRun",
+      "request": "launch",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "echo Core Platform bootRun is started by VS Code task."
+      ],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Core Platform bootRun",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

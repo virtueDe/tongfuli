@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Core Platform bootRun",
+      "type": "shell",
+      "command": ". ..\\..\\infra\\scripts\\use-dev-env.ps1; $env:GRADLE_USER_HOME='${workspaceFolder}\\.tmp\\gradle-user-home'; .\\gradlew.bat bootRun",
+      "options": {
+        "cwd": "${workspaceFolder}\\services\\core-platform",
+        "shell": {
+          "executable": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+          "args": [
+            "-NoProfile",
+            "-Command"
+          ]
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "java",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^(.*)$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "> Task :bootRun",
+          "endsPattern": "Tomcat started on port 8080 \\(http\\) with context path '/'"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false,
+        "clear": false
+      }
+    }
+  ]
+}

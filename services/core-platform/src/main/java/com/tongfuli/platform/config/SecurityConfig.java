@@ -30,8 +30,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/admin/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/public/**").permitAll()
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/v1/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/v1/public/**").permitAll()
+                        .anyRequest().permitAll())
                 .build();
     }
 
