@@ -7,3 +7,9 @@
 - `deploy/`：Docker、Compose、Kubernetes、Helm、Argo CD 等部署资产
 - `observability/`：OpenTelemetry、Prometheus、Grafana、Loki 等观测配置
 - `scripts/`：初始化、迁移、诊断、开发辅助脚本
+
+## 当前状态
+
+- `deploy/` 已有基础 compose
+- `observability/` 已补本地观测栈 compose 与基础配置
+- `scripts/` 已有本地环境切换脚本
